@@ -39,7 +39,7 @@ exports.confirm = function(text, color){
 	if(color === undefined){
 		console.log(cyan + "Confirmation: " + Reset + text)
 	}else{
-		console.log(color + "Alert: " + Reset + text)
+		console.log(color + "Confirmation: " + Reset + text)
 	}
 }
 
@@ -59,7 +59,10 @@ exports.item = function(text, color){
 	}
 }
 
-
-
-
-
+exports.warn = function(text, color1, color2){
+	if(color1 === undefined || color2 === undefined){
+		console.log(yellow + bright +"Warn: " + red + bright + text + Reset)
+	}else{
+		console.log(color1 + bright +"Warn: " + color2 + bright + text + Reset)
+	}
+}
