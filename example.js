@@ -1,0 +1,17 @@
+const da = require('dalogger')
+
+console.log('\n' + "Default Settings")
+da.status("DALogger is working")
+da.alert("Make sure it is up to date")
+da.warn("Perhaps it is up to date")
+da.error("This module is working properly")
+da.trade("This module don't send trades to your :D")
+da.confirm("Do you like this module ?")
+
+console.log('\n' + "Custom Settings")
+da.status("DALogger is working", da.blue)
+da.alert("Make sure it is up to date", da.magenta)
+da.warn("Perhaps it is up to date", da.blue, da.green)
+da.error("This module is working properly", da.cyan)
+da.trade("This module don't send trades to your :D", da.green)
+da.confirm("Do you like this module ?", da.red)
