@@ -10,59 +10,79 @@ var Reset = "\x1b[0m";
 var bright = "\x1b[1m";
 var dim = "\x1b[2m";
 
+exports.black = black
+exports.red = red
+exports.green = green
+exports.yellow = yellow
+exports.blue = blue
+exports.magenta = magenta
+exports.cyan = cyan
+exports.white = white
+exports.time = timeStamp()
 
 exports.status = function(text, color){
 	if(color === undefined){
-		console.log(green + "Status: " + Reset + text)
+		console.log(timeStamp() + green + "Status: " + Reset + text)
 	}else{
-		console.log(color + "Status: " + Reset + text)
+		console.log(timeStamp() + color + "Status: " + Reset + text)
 	}
 }
 
 exports.trade =	function(text, color){
 	if(color === undefined){
-		console.log(magenta + "Trade: " + Reset + text)
+		console.log(timeStamp() + magenta + "Trade: " + Reset + text)
 	}else{
-		console.log(color + "Trade: " + Reset + text)
+		console.log(timeStamp() + color + "Trade: " + Reset + text)
 	}
 }
 
 exports.alert =	function(text, color){
 	if(color === undefined){
-		console.log(yellow + "Alert: " + Reset + text)
+		console.log(timeStamp() + yellow + "Alert: " + Reset + text)
 	}else{
-		console.log(color + "Alert: " + Reset + text)
+		console.log(timeStamp() + color + "Alert: " + Reset + text)
 	}
 }
 
 exports.confirm = function(text, color){
 	if(color === undefined){
-		console.log(cyan + "Confirmation: " + Reset + text)
+		console.log(timeStamp() + cyan + "Confirmation: " + Reset + text)
 	}else{
-		console.log(color + "Confirmation: " + Reset + text)
+		console.log(timeStamp() + color + "Confirmation: " + Reset + text)
 	}
 }
 
 exports.error = function(text, color){
 	if(color === undefined){
-		console.log(red + "Error: " + Reset + text + Reset)
+		console.log(timeStamp() + red + "Error: " + Reset + text + Reset)
 	}else{
-		console.log(color + "Error: " + Reset + text)
+		console.log(timeStamp() + color + "Error: " + Reset + text)
 	}
 }
 
 exports.item = function(text, color){
 	if(color === undefined){
-		console.log(green + bright + "(" + text + ")" + Reset)
+		console.log(timeStamp() + green + bright + "(" + text + ")" + Reset)
 	}else{
-		console.log(color + bright + "(" + text + ")" + Reset)
+		console.log(timeStamp() + color + bright + "(" + text + ")" + Reset)
 	}
 }
 
 exports.warn = function(text, color1, color2){
 	if(color1 === undefined || color2 === undefined){
-		console.log(yellow + bright +"Warn: " + red + bright + text + Reset)
+		console.log(timeStamp() + yellow + bright +"Warn: " + red + bright + text + Reset)
 	}else{
-		console.log(color1 + bright +"Warn: " + color2 + bright + text + Reset)
+		console.log(timeStamp() + color1 + bright +"Warn: " + color2 + bright + text + Reset)
 	}
+}
+
+function timeStamp(){
+	d = new Date()
+	hour = d.getHours()
+	minute = d.getMinutes()
+	second = d.getSeconds()
+	
+	var time = green + "[" + hour + ":" + minute + ":" + second + "] " + Reset
+	
+	return time
 }
