@@ -7,6 +7,7 @@ da.warn("Perhaps it is up to date")
 da.error("This module is working properly")
 da.trade("This module don't send trades to your :D")
 da.confirm("Do you like this module ?")
+console.log(da.time())
 
 console.log('\n' + "Custom Settings")
 da.status("DALogger is working", da.blue)
