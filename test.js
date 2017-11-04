@@ -1,7 +1,7 @@
 const da = require('./index.js')
 
-da.warn("asdasd")
+console.log(da.time())
 
 setTimeout(function(){
-	da.warn("sadasd")
+	console.log(da.time())
 },3000)

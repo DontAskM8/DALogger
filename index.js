@@ -18,7 +18,6 @@ exports.blue = blue
 exports.magenta = magenta
 exports.cyan = cyan
 exports.white = white
-exports.time = timeStamp()
 
 exports.status = function(text, color){
 	if(color === undefined){
@@ -78,11 +77,22 @@ exports.warn = function(text, color1, color2){
 
 function timeStamp(){
 	d = new Date()
-	hour = d.getHours()
-	minute = d.getMinutes()
-	second = d.getSeconds()
+	var hour = ("00" + d.getHours()).substr(-2)
+	var minute = ("00" + d.getMinutes()).substr(-2)
+	var second = ("00" + d.getSeconds()).substr(-2)
 	
-	var time = green + "[" + hour + ":" + minute + ":" + second + "] " + Reset
+	var time = green + bright + "[" + cyan + hour + white + ":" + cyan + minute + white + ":" + cyan + second + green + "] " + Reset
+	
+	return time
+}
+
+exports.time = function(){
+	d = new Date()
+	var hour = ("00" + d.getHours()).substr(-2)
+	var minute = ("00" + d.getMinutes()).substr(-2)
+	var second = ("00" + d.getSeconds()).substr(-2)
+	
+	var time = green + bright + "[" + cyan + hour + white + ":" + cyan + minute + white + ":" + cyan + second + green + "] " + Reset
 	
 	return time
 }
