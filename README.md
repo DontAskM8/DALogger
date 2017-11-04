@@ -6,14 +6,14 @@
 Color is optional. If not inputted, default value will be used
 
 ### status(text, color)
-> Status: Text
+> [HH:MM:SS] Status: Text
 
 Text is what you want it to output  
 Color is the color you want `Status: ` in.  
 Default: Green
 
 ### trade(text, color)
-> Trade: Text
+>  [HH:MM:SS] Trade: Text
 
 Text is what you want it to output  
 Color is the color you want `Trade: ` in.  
