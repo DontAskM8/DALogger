@@ -1,3 +1,5 @@
+const fs = require("fs")
+
 var black = "\x1b[30m";
 var red = "\x1b[31m";
 var green = "\x1b[32m";
@@ -19,63 +21,96 @@ exports.magenta = magenta
 exports.cyan = cyan
 exports.white = white
 
+function updateLogFile(logDetails){
+	var d = new Date();
+	var year = d.getYear()+1900
+	var month = d.getMonth()+1
+	var day = d.getDate()
+	
+	if(fs.existsSync('../../log/') == false){
+		fs.mkdirSync('../../log/')
+	}
+	if(fs.existsSync(`../../log/${year}-${month}-${day}.log`) == false){
+		fs.writeFileSync(`../../log/${year}-${month}-${day}.log`)
+	}
+	
+	fs.appendFile(`../../log/${year}-${month}-${day}.log`, '\n' + logDetails, function(err){
+		if(err)
+			console.log("Update log fail with error: " + err.message)
+	})
+}
+
+updateLogFile()
+
 exports.status = function(text, color){
 	if(color === undefined){
 		console.log(timeStamp() + green + "Status: " + Reset + text)
+		updateLogFile(normalTime() + "Status: " + text)
 	}else{
 		console.log(timeStamp() + color + "Status: " + Reset + text)
+		updateLogFile(normalTime() + "Status: " + text)
 	}
 }
 
 exports.trade =	function(text, color){
 	if(color === undefined){
 		console.log(timeStamp() + magenta + "Trade: " + Reset + text)
+		updateLogFile(normalTime() + "Trade: " + text)
 	}else{
 		console.log(timeStamp() + color + "Trade: " + Reset + text)
+		updateLogFile(normalTime() + "Trade: " + text)
 	}
 }
 
 exports.alert =	function(text, color){
 	if(color === undefined){
 		console.log(timeStamp() + yellow + "Alert: " + Reset + text)
+		updateLogFile(normalTime() + "Alert: " + text)
 	}else{
 		console.log(timeStamp() + color + "Alert: " + Reset + text)
+		updateLogFile(normalTime() + "Alert: " + text)
 	}
 }
 
 exports.confirm = function(text, color){
 	if(color === undefined){
 		console.log(timeStamp() + cyan + "Confirmation: " + Reset + text)
+		updateLogFile(normalTime() + "Confirmation: " + text)
 	}else{
 		console.log(timeStamp() + color + "Confirmation: " + Reset + text)
+		updateLogFile(normalTime() + "Confirmation: " + text)
 	}
 }
 
 exports.error = function(text, color){
 	if(color === undefined){
 		console.log(timeStamp() + red + "Error: " + Reset + text + Reset)
+		updateLogFile(normalTime() + "Error: " + text)
 	}else{
 		console.log(timeStamp() + color + "Error: " + Reset + text)
+		updateLogFile(normalTime() + "Error: " + text)
 	}
 }
 
 exports.item = function(text, color){
 	if(color === undefined){
-		console.log(timeStamp() + green + bright + "(" + text + ")" + Reset)
+		return (green + bright + "(" + text + ")" + Reset)
 	}else{
-		console.log(timeStamp() + color + bright + "(" + text + ")" + Reset)
+		return (color + bright + "(" + text + ")" + Reset)
 	}
 }
 
 exports.warn = function(text, color1, color2){
 	if(color1 === undefined || color2 === undefined){
-		console.log(timeStamp() + yellow + bright +"Warn: " + red + bright + text + Reset)
+		console.log(timeStamp() + yellow + bright + "Warn: " + red + bright + text + Reset)
+		updateLogFile(normalTime() + "Warn: " + text)
 	}else{
-		console.log(timeStamp() + color1 + bright +"Warn: " + color2 + bright + text + Reset)
+		console.log(timeStamp() + color1 + bright + "Warn: " + color2 + bright + text + Reset)
+		updateLogFile(normalTime() + "Warn: " + text)
 	}
 }
 
-function timeStamp(){
+exports.time = function(){
 	d = new Date()
 	var hour = ("00" + d.getHours()).substr(-2)
 	var minute = ("00" + d.getMinutes()).substr(-2)
@@ -86,7 +121,18 @@ function timeStamp(){
 	return time
 }
 
-exports.time = function(){
+function normalTime(){
+	d = new Date()
+	var hour = ("00" + d.getHours()).substr(-2)
+	var minute = ("00" + d.getMinutes()).substr(-2)
+	var second = ("00" + d.getSeconds()).substr(-2)
+	
+	var time =  "[" + hour + ":" + minute + ":" + second + "] "
+	
+	return time
+}
+
+function timeStamp(){
 	d = new Date()
 	var hour = ("00" + d.getHours()).substr(-2)
 	var minute = ("00" + d.getMinutes()).substr(-2)
