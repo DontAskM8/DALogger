@@ -27,67 +27,70 @@ function updateLogFile(logDetails){
 	var month = d.getMonth()+1
 	var day = d.getDate()
 	
-	if(fs.existsSync('../../log/') == false){
-		fs.mkdirSync('../../log/')
+	if(fs.existsSync('log') == false){
+		fs.mkdirSync('log')
 	}
-	if(fs.existsSync(`../../log/${year}-${month}-${day}.log`) == false){
-		fs.writeFileSync(`../../log/${year}-${month}-${day}.log`)
+	if(fs.existsSync(`log/${year}-${month}-${day}.log`) == false){
+		fs.writeFileSync(`log/${year}-${month}-${day}.log`,"")
 	}
 	
-	fs.appendFile(`../../log/${year}-${month}-${day}.log`, '\n' + logDetails, function(err){
+	fs.appendFile(`log/${year}-${month}-${day}.log`, '\n' + logDetails, function(err){
 		if(err)
 			console.log("Update log fail with error: " + err.message)
 	})
 }
 
-updateLogFile()
+var user_name = ""
+exports.setUser = function(whatName){
+	user_name = whatName + " "
+}
 
 exports.status = function(text, color){
 	if(color === undefined){
-		console.log(timeStamp() + green + "Status: " + Reset + text)
+		console.log(timeStamp() + user() + green + "Status: " + Reset + text)
 		updateLogFile(normalTime() + "Status: " + text)
 	}else{
-		console.log(timeStamp() + color + "Status: " + Reset + text)
+		console.log(timeStamp() + user()  + color + "Status: " + Reset + text)
 		updateLogFile(normalTime() + "Status: " + text)
 	}
 }
 
 exports.trade =	function(text, color){
 	if(color === undefined){
-		console.log(timeStamp() + magenta + "Trade: " + Reset + text)
+		console.log(timeStamp() + user()  + magenta + "Trade: " + Reset + text)
 		updateLogFile(normalTime() + "Trade: " + text)
 	}else{
-		console.log(timeStamp() + color + "Trade: " + Reset + text)
+		console.log(timeStamp() + user()  + color + "Trade: " + Reset + text)
 		updateLogFile(normalTime() + "Trade: " + text)
 	}
 }
 
 exports.alert =	function(text, color){
 	if(color === undefined){
-		console.log(timeStamp() + yellow + "Alert: " + Reset + text)
+		console.log(timeStamp() + user()  + yellow + "Alert: " + Reset + text)
 		updateLogFile(normalTime() + "Alert: " + text)
 	}else{
-		console.log(timeStamp() + color + "Alert: " + Reset + text)
+		console.log(timeStamp() + user()  + color + "Alert: " + Reset + text)
 		updateLogFile(normalTime() + "Alert: " + text)
 	}
 }
 
 exports.confirm = function(text, color){
 	if(color === undefined){
-		console.log(timeStamp() + cyan + "Confirmation: " + Reset + text)
+		console.log(timeStamp() + user()  + cyan + "Confirmation: " + Reset + text)
 		updateLogFile(normalTime() + "Confirmation: " + text)
 	}else{
-		console.log(timeStamp() + color + "Confirmation: " + Reset + text)
+		console.log(timeStamp() + user()  + color + "Confirmation: " + Reset + text)
 		updateLogFile(normalTime() + "Confirmation: " + text)
 	}
 }
 
 exports.error = function(text, color){
 	if(color === undefined){
-		console.log(timeStamp() + red + "Error: " + Reset + text + Reset)
+		console.log(timeStamp() + user()  + red + "Error: " + Reset + text + Reset)
 		updateLogFile(normalTime() + "Error: " + text)
 	}else{
-		console.log(timeStamp() + color + "Error: " + Reset + text)
+		console.log(timeStamp() + user()  + color + "Error: " + Reset + text)
 		updateLogFile(normalTime() + "Error: " + text)
 	}
 }
@@ -102,10 +105,10 @@ exports.item = function(text, color){
 
 exports.warn = function(text, color1, color2){
 	if(color1 === undefined || color2 === undefined){
-		console.log(timeStamp() + yellow + bright + "Warn: " + red + bright + text + Reset)
+		console.log(timeStamp() + user()  + yellow + bright + "Warn: " + red + bright + text + Reset)
 		updateLogFile(normalTime() + "Warn: " + text)
 	}else{
-		console.log(timeStamp() + color1 + bright + "Warn: " + color2 + bright + text + Reset)
+		console.log(timeStamp() + user()  + color1 + bright + "Warn: " + color2 + bright + text + Reset)
 		updateLogFile(normalTime() + "Warn: " + text)
 	}
 }
@@ -141,4 +144,8 @@ function timeStamp(){
 	var time = green + bright + "[" + cyan + hour + white + ":" + cyan + minute + white + ":" + cyan + second + green + "] " + Reset
 	
 	return time
+}
+
+function user(){
+	return yellow + bright + user_name + Reset
 }
