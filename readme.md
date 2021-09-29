@@ -5,50 +5,50 @@
 # Methods
 Color is optional. If not inputted, default value will be used
 
-### status(text, color)
-> [HH:MM:SS] Status: Text
+### status(...text)
+> [HH:MM:SS:sss] Status: Text
 
 Text is what you want it to output  
 Color is the color you want `Status: ` in.  
 Default: Green
 
-### trade(text, color)
-> [HH:MM:SS] Trade: Text
+### trade(...text)
+> [HH:MM:SS:sss] Trade: Text
 
 Text is what you want it to output  
 Color is the color you want `Trade: ` in.  
 Default: Magenta
 
-### alert(text, color)
-> [HH:MM:SS] Alert: Text
+### alert(...text)
+> [HH:MM:SS:sss] Alert: Text
 
 Text is what you want it to output  
 Color is the color you want `Alert: ` in.  
 Default: Yellow
 
-### confirm(text, color)
-> [HH:MM:SS] Confirmation: Text
+### confirm(...text)
+> [HH:MM:SS:sss] Confirmation: Text
 
 Text is what you want it to output  
 Color is the color you want `Confirmation: ` in.  
 Default: Cyan
 
-### error(text, color)
-> [HH:MM:SS] Error: Text
+### error(...text)
+> [HH:MM:SS:sss] Error: Text
 
 Text is what you want it to output  
 Color is the color you want `Error: ` in.  
 Default: Red
 
-### item(text, color)
+### item(text)
 > (Text)
 
 Text is what you want it to output  
 Color is the color you want `( )` in.  
 Default: Green
 
-### warn(text, color1, color2)
-> [HH:MM:SS] Warn: Text
+### warn(...text1)
+> [HH:MM:SS:sss] Warn: Text
 
 Text is what you want it to output  
 Color1 is the color you want `Warn: ` in.  
@@ -56,6 +56,6 @@ Color2 is the color you want `Text` in.
 Default: Yellow, Red
 
 ### time()
-> [HH:MM:SS]
+> [HH:MM:SS:sss]
 
 Returns current time for your own use

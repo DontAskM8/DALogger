@@ -1,33 +1,29 @@
 {
-  "_from": "dalogger@1.4.3",
-  "_id": "dalogger@1.4.3",
+  "_from": "dalogger",
   "_inBundle": false,
-  "_integrity": "sha512-DYpiqfxeMYnLKhTZqrt9fCYXkE4bv+BMAcK3cx79R7tdW9dvNo3WwhNNIf8PHbOcX2dCjkRFCHGQMIEg2Sy44Q==",
+  "_integrity": "sha1-GmKOqZBizRSu42pht04XpOKh6pk=",
   "_location": "/dalogger",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "dalogger@1.4.3",
+    "raw": "dalogger",
     "name": "dalogger",
     "escapedName": "dalogger",
-    "rawSpec": "1.4.3",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "1.4.3"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/dalogger/-/dalogger-1.4.3.tgz",
-  "_shasum": "536f1b8f70acf4145cadf71ad0416003b9057896",
-  "_spec": "dalogger@1.4.3",
-  "_where": "C:\\Users\\jingy\\Desktop\\Stuff\\Node stuff\\CraftingBot",
+  "_resolved": "https://registry.npmjs.org/dalogger/-/dalogger-1.3.4.tgz",
+  "_shasum": "1a628ea99062cd14aee36a61b74e17a4e2a1ea99",
+  "_spec": "dalogger",
+  "_where": "C:\\Users\\jingy\\Desktop\\Stuff\\Node stuff",
   "author": "",
   "bundleDependencies": false,
-  "dependencies": {
-    "fs": "0.0.1-security"
-  },
   "deprecated": false,
   "description": "1. Install the node module using `npm i dalogger --save`\r 2. Go fancy",
   "license": "ISC",
@@ -36,5 +32,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.4.4"
+  "version": "1.3.53",
+  "dependencies": {
+    "circular-json": "^0.5.9",
+    "fs": "0.0.1-security"
+  }
 }

@@ -1,4 +1,7 @@
-const da = require('./index.js')
+const Dalogger = require('./index.js')
 
-da.setUser("dontask")
-da.status("test")
+const log = new Dalogger({
+	displayDebug: true
+})
+
+log.debug({test: "gay"}, "lol")
