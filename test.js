@@ -4,4 +4,4 @@ const log = new Dalogger({
 	displayDebug: true
 })
 
-log.debug({test: "gay"}, "lol")
+log.debug({test: "test"}, "test")
