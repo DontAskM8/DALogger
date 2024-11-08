@@ -1,26 +1,7 @@
 const fs = require("fs")
 const circularJSON = require('circular-json')
 
-var black = "\x1b[30m";
-var red = "\x1b[31m";
-var green = "\x1b[32m";
-var yellow = "\x1b[33m";
-var blue = "\x1b[34m";
-var magenta = "\x1b[35m";
-var cyan = "\x1b[36m";
-var white = "\x1b[37m";
-var Reset = "\x1b[0m";
-var bright = "\x1b[1m";
-var dim = "\x1b[2m";
-
-exports.black = black
-exports.red = red
-exports.green = green
-exports.yellow = yellow
-exports.blue = blue
-exports.magenta = magenta
-exports.cyan = cyan
-exports.white = white
+const Color = require("./colors.js");
 
 function DALog(options) {
 	var self = this
@@ -32,12 +13,73 @@ function DALog(options) {
 	this.displayDebug = options.displayDebug || false
 	
 	this.user = function(){
-		if(self.user_name != null){
-			return yellow + bright + self.user_name + Reset + " "
-		}else{
+		if(self.user_name != null) {
+			return Color.yellow + bright + self.user_name + Reset + " "
+		}
+		else {
 			return ""
 		}
 	}
+
+	this.color = Color;
+
+	this.register({
+		name: "Status", 
+		color: Color.green,
+	})
+	
+	this.register({
+		name: "Trade", 
+		color: Color.magenta
+	})
+
+	this.register({
+		name: "Confirmation", 
+		color: Color.cyan
+	})
+
+	this.register({
+		name: "Alert", 
+		color: Color.yellow
+	})
+
+	this.register({
+		name: "Confirmation", 
+		color: Color.yellow
+	})
+
+	this.register({
+		name: "Error", 
+		color: Color.red
+	})
+
+	this.register({
+		name: "Confirmation", 
+		color: Color.yellow
+	})
+	
+
+}
+
+DALog.prototype.register = function({
+	name, 
+	color = Color.white,
+	includeTime = true,
+	removeCircularJSON = false,
+	writeLog = true
+}){
+	const self = this;
+
+	//Create new log levels
+	Object.assign(DALog.prototype, {
+		[name]: function(...text){
+			if(removeCircularJSON) text = processMessage(...text)
+
+			console.log((includeTime ? timeStamp() : "") + self.user() + color + name + ": " + Color.Reset + text);
+
+			if(writeLog) self.updateLogFile(normalTime() + name + ": " + text)
+		}
+	})
 }
 
 module.exports = DALog
@@ -80,54 +122,20 @@ DALog.prototype.setUser = function(whatName){
 	this.user_name = whatName
 }
 
-DALog.prototype.status = function(...text){
-	var self = this
-	text = processMessage(...text)
-	console.log(timeStamp() + self.user() + green + "Status: " + Reset + text)
-	self.updateLogFile(normalTime() + "Status: " + text)
-}
-
-DALog.prototype.trade =	function(...text){
-	var self = this
-	text = processMessage(...text)
-	console.log(timeStamp() + self.user()  + magenta + "Trade: " + Reset + text)
-	self.updateLogFile(normalTime() + "Trade: " + text)
-}
-
-DALog.prototype.alert =	function(...text){
-	var self = this
-	text = processMessage(...text)
-	console.log(timeStamp() + self.user()  + yellow + "Alert: " + Reset + text)
-	self.updateLogFile(normalTime() + "Alert: " + text)
-}
-
-DALog.prototype.confirm = function(...text){
-	var self = this
-	text = processMessage(...text)
-	console.log(timeStamp() + self.user()  + cyan + "Confirmation: " + Reset + text)
-	self.updateLogFile(normalTime() + "Confirmation: " + text)
-}
-
-DALog.prototype.error = function(...text){
-	var self = this
-	text = processMessage(...text)
-	console.log(timeStamp() + self.user()  + red + "Error: " + Reset + text + Reset)
-	self.updateLogFile(normalTime() + "Error: " + text)
-}
 
 DALog.prototype.item = function(text){
 	var self = this
 	if(color === undefined){
-		return (green + bright + "(" + text + ")" + Reset)
+		return (Color.green + Color.bright + "(" + text + ")" + Color.Reset)
 	}else{
-		return (color + bright + "(" + text + ")" + Reset)
+		return (color + Color.bright + "(" + text + ")" + Color.Reset)
 	}
 }
 
 DALog.prototype.warn = function(...text){
 	var self = this
 	text = processMessage(...text)
-	console.log(timeStamp() + self.user()  + yellow + bright + "Warn: " + red + bright + text + Reset)
+	console.log(timeStamp() + self.user()  + Color.yellow + Color.bright + "Warn: " + Color.red + Color.bright + text + Color.Reset)
 	self.updateLogFile(normalTime() + "Warn: " + text)
 }
 
@@ -135,7 +143,7 @@ DALog.prototype.debug = function(...text){
 	var self = this
 	text = processMessage(...text)
 	if(self.displayDebug == true){
-		console.log(timeStamp() + self.user() + yellow + bright + "<Debug>: "  + Reset + text.join(" ") + Reset)
+		console.log(timeStamp() + self.user() + Color.yellow + Color.bright + "<Debug>: "  + Color.Reset + text.join(" ") + Color.Reset)
 	}
 	self.updateLogFile(normalTime() + "<Debug>: " + text.join(" "), true)
 }
@@ -143,16 +151,15 @@ DALog.prototype.debug = function(...text){
 DALog.prototype.time = function(){
 	var { hour, minute, second, ms } = returnTime()
 	
-	var time = green + bright + "[" + cyan + hour + white + ":" + cyan + minute + white + ":" + cyan + second + green + "] " + Reset
+	var time = Color.green + Color.bright + "[" + Color.cyan + hour + Color.white + ":" + Color.cyan + minute + Color.white + ":" + Color.cyan + second + Color.green + "] " + Color.Reset
 	
 	return time
 }
 
 function processMessage(...msg) {
-	var _msg = msg
-	return _msg = _msg.map(function(x){
-		if(typeof x != "string" && typeof x != "number") return JSON.stringify(JSON.parse(circularJSON.stringify(x)), null, '\t')
-		return x
+	return msg.map((x) => {
+		if(typeof x === "string" || typeof x === "number" || typeof x !== "object") return x
+		return JSON.stringify(JSON.parse(circularJSON.stringify(x)), null, '\t')
 	})
 }
 
@@ -176,7 +183,7 @@ function normalTime(){
 function timeStamp(){
 	var { hour, minute, second, ms } = returnTime()
 	
-	var time = green + bright + "[" + cyan + hour + white + ":" + cyan + minute + white + ":" + cyan + second + green + "] " + Reset
+	var time = Color.green + Color.bright + "[" + Color.cyan + hour + Color.white + ":" + Color.cyan + minute + Color.white + ":" + Color.cyan + second + Color.green + ":" + Color.cyan + ms + Color.green + "] " + Color.Reset
 	
 	return time
 }

@@ -5,3 +5,12 @@ const log = new Dalogger({
 })
 
 log.debug({test: "test"}, "test")
+
+
+
+log.register({
+	name: "account",
+	color: log.color.red
+})
+
+log.account("oiasodas@gmail.com")
