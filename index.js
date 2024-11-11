@@ -1,4 +1,5 @@
-const fs = require("fs")
+const fs = require('node:fs/promises');
+const path = require("path");
 const circularJSON = require('circular-json')
 
 const Color = require("./colors.js");
@@ -61,6 +62,12 @@ function DALog(options) {
 
 }
 
+module.exports = DALog
+
+DALog.prototype.setUser = function(whatName){
+	this.user_name = whatName
+}
+
 DALog.prototype.register = function({
 	name, 
 	color = Color.white,
@@ -82,46 +89,38 @@ DALog.prototype.register = function({
 	})
 }
 
-module.exports = DALog
 
-DALog.prototype.updateLogFile = function(logDetails,debug){
+DALog.prototype.updateLogFile = async function writeToFile(data, debug) {
 	var self = this
 	var d = new Date();
-	var year = d.getYear()+1900
+	var year = d.getFullYear()
 	var month = d.getMonth()+1
 	var day = d.getDate()
 	
-	logDetails = (typeof logDetails != "string" && typeof logDetails != "number") ? JSON.stringify(logDetails, null, '\t') : logDetails
+	data = (typeof data != "string" && typeof data != "number") ? JSON.stringify(data, null, '\t') : data
 
-	var logFileName = self.user_name != null ? `log/${year}-${month}-${day}/${self.user_name}.log` : `log/${year}-${month}-${day}/default.log`
-	var debugLogFileName = self.user_name != null ? `log/${year}-${month}-${day}/debug-${self.user_name}.log` : `log/${year}-${month}-${day}/debug.log`
-	var whereToWrite = "default"
-	
-	if(fs.existsSync('log') == false){
-		fs.mkdirSync('log')
-	}
-	if(fs.existsSync(`log/${year}-${month}-${day}`) == false){
-		fs.mkdirSync(`log/${year}-${month}-${day}`)
-	}
-	if(debug != undefined && debug == true){
-		whereToWrite = "debug"
-		fs.existsSync(debugLogFileName) == false ? fs.writeFileSync(debugLogFileName,"") : ""
-	}else{
-		fs.existsSync(logFileName) == false ? fs.writeFileSync(logFileName,"") : ""
-	}
-	
+	var fileName = (self.user_name ? (self.user_name + "-") : "") + (debug ? "debug" : (self.user_name ? "" : "default")) + ".log"
+	var filePath = `log/${year}-${month}-${day}/`
+	var fullPath = path.join(filePath, fileName);
+
 	try {
-		whereToWrite == "default" ? fs.appendFileSync(logFileName, '\n' + logDetails) : fs.appendFileSync(debugLogFileName, '\n' + logDetails)
+		await fs.appendFile(fullPath, data);
 	}
-	catch(err){
-		console.log("Update log fail with error: " + err)
+	catch (err) {
+		if (err.code === 'ENOENT') {
+			
+			// Create the directory and then write the file
+			await fs.mkdir(filePath, { recursive: true });
+	  
+			// Retry writing to the file
+			await fs.appendFile(fullPath, data);
+		} 
+		else {
+			// Handle any other errors
+			console.error('An unexpected error occurred:', err);
+		}
 	}
 }
-
-DALog.prototype.setUser = function(whatName){
-	this.user_name = whatName
-}
-
 
 DALog.prototype.item = function(text){
 	var self = this
