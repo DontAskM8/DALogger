@@ -84,7 +84,7 @@ DALog.prototype.register = function({
 
 			console.log((includeTime ? timeStamp() : "") + this.user() + color + name + ": " + Color.Reset + text);
 
-			if(writeLog) this.updateLogFile(normalTime() + name + ": " + text)
+			if(writeLog) this.updateLogFile(normalTime() + name + ": " + text + "\n")
 		}
 	})
 }
