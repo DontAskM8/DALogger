@@ -6,7 +6,7 @@ const log = new Dalogger({
 
 log.debug({test: "test"}, "test")
 
-
+log.setUser("barbie")
 
 log.register({
 	name: "account",
@@ -14,3 +14,5 @@ log.register({
 })
 
 log.account("oiasodas@gmail.com")
+
+console.log(log)

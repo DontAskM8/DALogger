@@ -15,7 +15,7 @@ function DALog(options) {
 	
 	this.user = function(){
 		if(self.user_name != null) {
-			return Color.yellow + bright + self.user_name + Reset + " "
+			return Color.yellow + Color.bright + self.user_name + Color.Reset + " "
 		}
 		else {
 			return ""
@@ -82,9 +82,9 @@ DALog.prototype.register = function({
 		[name]: function(...text){
 			if(removeCircularJSON) text = processMessage(...text)
 
-			console.log((includeTime ? timeStamp() : "") + self.user() + color + name + ": " + Color.Reset + text);
+			console.log((includeTime ? timeStamp() : "") + this.user() + color + name + ": " + Color.Reset + text);
 
-			if(writeLog) self.updateLogFile(normalTime() + name + ": " + text)
+			if(writeLog) this.updateLogFile(normalTime() + name + ": " + text)
 		}
 	})
 }
